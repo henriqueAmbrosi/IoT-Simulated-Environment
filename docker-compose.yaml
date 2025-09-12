@@ -19,6 +19,14 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     depends_on:
       - postgres
+  node-red:
+    image: nodered/node-red:latest
+    environment:
+      - TZ=Europe/Amsterdam
+    ports:
+      - "1880:1880"
+    volumes:
+      - node-red-data:/data
   kafka:
     restart: always
     image: bitnamilegacy/kafka:4.0
@@ -44,6 +52,7 @@ services:
     volumes:
       - kafka-data:/bitnami
   thingsboard-ce:
+    container_name: 'thingsboard-ce'
     restart: always
     image: "thingsboard/tb-node:4.2.0"
     ports:
@@ -67,6 +76,7 @@ services:
       - kafka
 
 volumes:
+  node-red-data:
   postgres-data:
     name: tb-postgres-data
     driver: local
