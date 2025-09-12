@@ -1,0 +1,301 @@
+[
+    {
+        "id": "1dcceb62887c0c40",
+        "type": "tab",
+        "label": "Android",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "d8fd42a57a2a276d",
+        "type": "inject",
+        "z": "1dcceb62887c0c40",
+        "name": "Trigger (5s)",
+        "props": [
+            {
+                "p": "timestamp",
+                "v": "",
+                "vt": "date"
+            }
+        ],
+        "repeat": "10",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "",
+        "topic": "",
+        "x": 230,
+        "y": 460,
+        "wires": [
+            [
+                "9bf0977b3d4432b2",
+                "9f6c7b5bdfad0249",
+                "b134ab7f4a96b8c2",
+                "da1c908407d51fc6"
+            ]
+        ],
+        "info": "Trigger"
+    },
+    {
+        "id": "9e25e193ffc26919",
+        "type": "mqtt out",
+        "z": "1dcceb62887c0c40",
+        "name": "",
+        "topic": "v1/devices/me/telemetry",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "635b151446051cd9",
+        "x": 1730,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "9bf0977b3d4432b2",
+        "type": "join",
+        "z": "1dcceb62887c0c40",
+        "name": "Barrier to get full report",
+        "mode": "custom",
+        "build": "merged",
+        "property": "",
+        "propertyType": "full",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": true,
+        "accumulate": false,
+        "timeout": "",
+        "count": "4",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 1010,
+        "y": 460,
+        "wires": [
+            [
+                "99566b8d3a073890"
+            ]
+        ]
+    },
+    {
+        "id": "b134ab7f4a96b8c2",
+        "type": "exec",
+        "z": "1dcceb62887c0c40",
+        "command": "termux-battery-status",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Baterry Telemetry",
+        "x": 510,
+        "y": 260,
+        "wires": [
+            [
+                "80232b7d2721a346"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "9f6c7b5bdfad0249",
+        "type": "exec",
+        "z": "1dcceb62887c0c40",
+        "command": "termux-location -p network -r once",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Location",
+        "x": 480,
+        "y": 340,
+        "wires": [
+            [
+                "22caeac542d1da35"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "da1c908407d51fc6",
+        "type": "exec",
+        "z": "1dcceb62887c0c40",
+        "command": "termux-sensor -s \"STK31610 Light\" -n 1",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Light",
+        "x": 470,
+        "y": 180,
+        "wires": [
+            [
+                "80153df3adc66e03"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "80153df3adc66e03",
+        "type": "function",
+        "z": "1dcceb62887c0c40",
+        "name": "function 1",
+        "func": "let obj = {\n    light: JSON.parse(msg.payload)\n}\nreturn obj;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 160,
+        "wires": [
+            [
+                "9bf0977b3d4432b2"
+            ]
+        ]
+    },
+    {
+        "id": "80232b7d2721a346",
+        "type": "function",
+        "z": "1dcceb62887c0c40",
+        "name": "function 2",
+        "func": "let obj = {\n    battery: JSON.parse(msg.payload)\n}\nreturn obj;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 240,
+        "wires": [
+            [
+                "9bf0977b3d4432b2"
+            ]
+        ]
+    },
+    {
+        "id": "22caeac542d1da35",
+        "type": "function",
+        "z": "1dcceb62887c0c40",
+        "name": "function 3",
+        "func": "let obj = {\n    location: JSON.parse(msg.payload)\n}\nreturn obj;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 320,
+        "wires": [
+            [
+                "9bf0977b3d4432b2"
+            ]
+        ]
+    },
+    {
+        "id": "99566b8d3a073890",
+        "type": "function",
+        "z": "1dcceb62887c0c40",
+        "name": "Filtering data sent",
+        "func": "// Get last stored reading from context\nlet last = flow.get(\"lastReading-d2\") || {};\n\n// Current values\nlet battery = msg.battery;\nlet location = msg.location;\n\n// Check if repeated\nlet sameBattery = last.battery !== undefined &&\n    last.battery.percentage === battery.percentage &&\n    last.battery.status === battery.status;\nlet sameLocation = last.location !== undefined &&\n    last.location.latitude === location.latitude &&\n    last.location.longitude === location.longitude &&\n    last.location.altitude === location.altitude;\n\nif (sameBattery) {\n    delete msg.battery\n}\n\nif (sameLocation) {\n    delete msg.location\n}\n\n// Update stored values\nflow.set(\"lastReading-d2\", {\n    battery: battery,\n    location: location\n});\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1290,
+        "y": 460,
+        "wires": [
+            [
+                "c29af3785de4b191"
+            ]
+        ]
+    },
+    {
+        "id": "d497d9576f2157b2",
+        "type": "debug",
+        "z": "1dcceb62887c0c40",
+        "name": "Data sent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1680,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "c29af3785de4b191",
+        "type": "function",
+        "z": "1dcceb62887c0c40",
+        "name": "format message",
+        "func": "msg.payload.light = Object.values(msg.light)[0]?.values[0]\ndelete msg.light\n\nif(msg.location){\n    msg.payload.latitude = msg.location.latitude\n    msg.payload.longitude = msg.location.longitude\n    msg.payload.altitude = msg.location.altitude\n    delete msg.location\n}\ndelete msg.payload.location\n\nif(msg.battery){\n    msg.payload.batteryPercentage = msg.battery.percentage\n    msg.payload.batteryStatus = msg.battery.status\n    delete msg.battery\n}\ndelete msg.payload.battery\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1500,
+        "y": 460,
+        "wires": [
+            [
+                "9e25e193ffc26919",
+                "d497d9576f2157b2"
+            ]
+        ]
+    },
+    {
+        "id": "635b151446051cd9",
+        "type": "mqtt-broker",
+        "name": "Device 1",
+        "broker": "thingsboard-ce",
+        "port": 1883,
+        "clientid": "1",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]

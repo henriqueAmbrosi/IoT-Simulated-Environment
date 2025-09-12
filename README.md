@@ -4,7 +4,15 @@ O seguinte repositório simula um ambiente de IoT utilizando ThingsBoard como br
 
 ## Configurando o ambiente
 
+### Broker
 
+Para configurar o broker, abra no navegador `http://localhost:8080`, em seguida acesse o sistema com as seguintes credenciais
+```
+Email: tenant@thingsboard.org
+Senha: tenant
+```
+
+Após, vá para `Advanced Features > Version control` 
 
 ## Serviços
 
