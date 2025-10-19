@@ -54,6 +54,10 @@ Esses comandos instalarão tanto o node como node-red e para iniciar o node-red,
 
 É importante validar que os comandos do sensor que estão pré configurados funcionem no seu dispositivo e caso não funcionem é necessário atualizá-los nos blocos de `exec` Light, Battery Telemetry e Location (é bem provável que seja necessário mudar o nome dos sensores de acordo no comando dos blocos citados). Para referência, o dispositivo utilizado é um Galaxy A55 com o android 15.
 
+##### Problemas com Android matando processo
+
+No Android existe um mecanismo chamado Phantom Process Killer, que faz com que processos em segundo plano sejam encerrados para poupar bateria. Caso, o termux sinalize que o processo foi encerrado com o sinal 9, você pode seguir o tutorial do [video](https://www.youtube.com/watch?v=ArkFTNEbxZs) para corrigir isso.
+
 ```
 termux-sensor -s "STK31610 Light" -n 1 // Comando usado no bloco light
 termux-battery-status // Comando usado no bloco Battery Telemetry
