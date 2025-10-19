@@ -11,7 +11,7 @@
         "id": "d8fd42a57a2a276d",
         "type": "inject",
         "z": "1dcceb62887c0c40",
-        "name": "Trigger (5s)",
+        "name": "Trigger (10s)",
         "props": [
             {
                 "p": "timestamp",
@@ -49,7 +49,7 @@
         "userProps": "",
         "correl": "",
         "expiry": "",
-        "broker": "635b151446051cd9",
+        "broker": "635b152446051cd9",
         "x": 1730,
         "y": 380,
         "wires": []
@@ -268,12 +268,16 @@
         ]
     },
     {
-        "id": "635b151446051cd9",
+        "id": "635b152446051cd9",
         "type": "mqtt-broker",
-        "name": "Device 1",
-        "broker": "thingsboard-ce",
+        "name": "Android",
+        "broker": "192.168.3.13",
         "port": 1883,
-        "clientid": "1",
+        "credentials": {
+            "user": "ANDROID",
+            "password": "ANDROID"
+        },
+        "clientid": "5",
         "autoConnect": true,
         "usetls": false,
         "protocolVersion": 4,

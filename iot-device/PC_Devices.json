@@ -1,15 +1,15 @@
 [
     {
-        "id": "f6f2187d.f17ca8",
+        "id": "75eda1d0d4b6584b",
         "type": "tab",
         "label": "PC Devices",
         "disabled": false,
         "info": ""
     },
     {
-        "id": "64948a9a3b9b70a2",
+        "id": "5173486880489745",
         "type": "inject",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Trigger (10s)",
         "props": [
             {
@@ -27,18 +27,18 @@
         "y": 1280,
         "wires": [
             [
-                "9a22e111fc502b52",
-                "aeda57911d5a84cc",
-                "f4b4fb02c301c8f7",
-                "7881d875ac9b1548"
+                "70b4624e0a8f24c5",
+                "4f2fc0dd5bdb7c35",
+                "9c0ea6a4a85a5da6",
+                "20fe4a5a9752b745"
             ]
         ],
         "info": "Trigger"
     },
     {
-        "id": "70ab8b25ca661fcc",
+        "id": "acf94eddf408b2a0",
         "type": "mqtt out",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "",
         "topic": "v1/devices/me/telemetry",
         "qos": "",
@@ -54,9 +54,9 @@
         "wires": []
     },
     {
-        "id": "7881d875ac9b1548",
+        "id": "20fe4a5a9752b745",
         "type": "join",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Barrier to get full report",
         "mode": "custom",
         "build": "merged",
@@ -78,14 +78,14 @@
         "y": 1280,
         "wires": [
             [
-                "221308dbc9f15faa"
+                "34340eafb14a9b7b"
             ]
         ]
     },
     {
-        "id": "20b6a45940c99f60",
+        "id": "6212c095baa98740",
         "type": "debug",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Device 1 Output",
         "active": true,
         "tosidebar": true,
@@ -100,9 +100,9 @@
         "wires": []
     },
     {
-        "id": "9a22e111fc502b52",
+        "id": "70b4624e0a8f24c5",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Light Sensor",
         "func": "let light = 90 + Math.random() * 110; // 90–'200\nlet obj = {}\nobj.light = {\n \"STK31610 Light\": {\n    \"values\": [\n        light\n    ]\n }\n};\nreturn obj",
         "outputs": 1,
@@ -115,14 +115,14 @@
         "y": 1100,
         "wires": [
             [
-                "7881d875ac9b1548"
+                "20fe4a5a9752b745"
             ]
         ]
     },
     {
-        "id": "aeda57911d5a84cc",
+        "id": "4f2fc0dd5bdb7c35",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Battery",
         "func": "// Get last reading from context\nlet last = flow.get(\"lastReading-d1\")?.battery || {\n    percentage: 98,\n    status: \"CHARGING\"\n};\n\nlet percentage = last.percentage || 100;\nlet status = last.status || \"DISCHARGING\";\n\n// 20% chance of change\nif (Math.random() < 0.20) {\n    if (status === \"CHARGING\") {\n        percentage = percentage + 1;\n    } else {\n        percentage = percentage - 1;\n    }\n}\n\n// Flip status if reaching limits\nif (percentage === 100) {\n    status = \"DISCHARGING\";\n} else if (percentage === 0) {\n    status = \"CHARGING\";\n}\n\nlet obj = {};\nobj.battery = {\n    percentage: percentage,\n    status: status\n};\nreturn obj;",
         "outputs": 1,
@@ -135,14 +135,14 @@
         "y": 1140,
         "wires": [
             [
-                "7881d875ac9b1548"
+                "20fe4a5a9752b745"
             ]
         ]
     },
     {
-        "id": "f4b4fb02c301c8f7",
+        "id": "9c0ea6a4a85a5da6",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Location",
         "func": "let last = flow.get(\"lastReading-d1\")?.location || {\n    latitude: -29.1676245,\n    longitude: -51.5065077,\n    altitude: 642.2999877929688\n};\n\nlet latitude = last.latitude;\nlet longitude = last.longitude;\nlet altitude = last.altitude;\n\n// 50% chance to vary\nif (Math.random() < 0.5) {\n    // small delta ~ within ~1–5 meters movement\n    let deltaLat = (Math.random() - 0.5) * 0.00005;   // ~±5m\n    let deltaLon = (Math.random() - 0.5) * 0.00005;   // ~±5m\n    let deltaAlt = (Math.random() - 0.5) * 0.5;       // ±0.5m\n\n    latitude += deltaLat;\n    longitude += deltaLon;\n    altitude += deltaAlt;\n}\n\nlet newLoc = { latitude, longitude, altitude };\nreturn { location: newLoc };",
         "outputs": 1,
@@ -155,14 +155,14 @@
         "y": 1180,
         "wires": [
             [
-                "7881d875ac9b1548"
+                "20fe4a5a9752b745"
             ]
         ]
     },
     {
-        "id": "221308dbc9f15faa",
+        "id": "34340eafb14a9b7b",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Filter repeated readings",
         "func": "// Get last stored reading from context\nlet last = flow.get(\"lastReading-d1\") || {};\n\n// Current values\nlet battery = msg.battery;\nlet location = msg.location;\n\n// Check if repeated\nlet sameBattery = last.battery !== undefined && \n                last.battery.percentage === battery.percentage &&\n                last.battery.status === battery.status;\nlet sameLocation = last.location !== undefined &&\n                  last.location.latitude === location.latitude &&\n                  last.location.longitude === location.longitude &&\n                  last.location.altitude === location.altitude;\n\nif (sameBattery) {\n    delete msg.battery\n}\n\nif (sameLocation) {\n    delete msg.location\n}\n\n// Update stored values\nflow.set(\"lastReading-d1\", {\n    battery: battery,\n    location: location\n});\n\nreturn msg;",
         "outputs": 1,
@@ -175,14 +175,14 @@
         "y": 1280,
         "wires": [
             [
-                "d233afd6c7b81a77"
+                "afc423f02bad8a06"
             ]
         ]
     },
     {
-        "id": "d233afd6c7b81a77",
+        "id": "afc423f02bad8a06",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "format message",
         "func": "msg.payload.light = Object.values(msg.light)[0]?.values[0]\ndelete msg.light\n\nif(msg.location){\n    msg.payload.latitude = msg.location.latitude\n    msg.payload.longitude = msg.location.longitude\n    msg.payload.altitude = msg.location.altitude\n    delete msg.location\n}\ndelete msg.payload.location\n\nif(msg.battery){\n    msg.payload.batteryPercentage = msg.battery.percentage\n    msg.payload.batteryStatus = msg.battery.status\n    delete msg.battery\n}\ndelete msg.payload.battery\n\nreturn msg;",
         "outputs": 1,
@@ -195,15 +195,15 @@
         "y": 1280,
         "wires": [
             [
-                "20b6a45940c99f60",
-                "70ab8b25ca661fcc"
+                "6212c095baa98740",
+                "acf94eddf408b2a0"
             ]
         ]
     },
     {
-        "id": "5c863b10cf183843",
+        "id": "626d225743292c44",
         "type": "inject",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Trigger (10s)",
         "props": [
             {
@@ -221,18 +221,18 @@
         "y": 1700,
         "wires": [
             [
-                "61ec47522902810f",
-                "c49f3fa583805de7",
-                "6147c6b0e240f6c9",
-                "1aa006c22086956a"
+                "7dc4b4ec1236ee17",
+                "eb38681bb7a7d667",
+                "e09b1a61e6875016",
+                "0ed8756a8cab573d"
             ]
         ],
         "info": "Trigger"
     },
     {
-        "id": "52743451ffedfc3d",
+        "id": "da0fe4b4a314c386",
         "type": "mqtt out",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "",
         "topic": "v1/devices/me/telemetry",
         "qos": "",
@@ -248,9 +248,9 @@
         "wires": []
     },
     {
-        "id": "1aa006c22086956a",
+        "id": "0ed8756a8cab573d",
         "type": "join",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Barrier to get full report",
         "mode": "custom",
         "build": "merged",
@@ -272,14 +272,14 @@
         "y": 1700,
         "wires": [
             [
-                "a8247bd5afed370c"
+                "99f57fa8afc0420d"
             ]
         ]
     },
     {
-        "id": "4746adcb8d3b6beb",
+        "id": "90fdff3ac39be9a3",
         "type": "debug",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Device 2 Output",
         "active": false,
         "tosidebar": true,
@@ -294,9 +294,9 @@
         "wires": []
     },
     {
-        "id": "61ec47522902810f",
+        "id": "7dc4b4ec1236ee17",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Light Sensor",
         "func": "let light = 90 + Math.random() * 110; // 90–'200\nlet obj = {}\nobj.light = {\n \"STK31610 Light\": {\n    \"values\": [\n        light\n    ]\n }\n};\nreturn obj",
         "outputs": 1,
@@ -309,14 +309,14 @@
         "y": 1520,
         "wires": [
             [
-                "1aa006c22086956a"
+                "0ed8756a8cab573d"
             ]
         ]
     },
     {
-        "id": "c49f3fa583805de7",
+        "id": "eb38681bb7a7d667",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Battery",
         "func": "// Get last reading from context\nlet last = flow.get(\"lastReading-d2\")?.battery || {\n    percentage: 100,\n    status: \"DISCHARGING\"\n};\n\nlet percentage = last.percentage || 100;\nlet status = last.status || \"DISCHARGING\";\n\n// 20% chance of change\nif (Math.random() < 0.2) {\n    if (status === \"CHARGING\") {\n        percentage = percentage + 1;\n    } else {\n        percentage = percentage - 1;\n    }\n}\n\n// Flip status if reaching limits\nif (percentage === 100) {\n    status = \"DISCHARGING\";\n} else if (percentage === 0) {\n    status = \"CHARGING\";\n}\n\nlet obj = {};\nobj.battery = {\n    percentage: percentage,\n    status: status\n};\nreturn obj;",
         "outputs": 1,
@@ -329,14 +329,14 @@
         "y": 1560,
         "wires": [
             [
-                "1aa006c22086956a"
+                "0ed8756a8cab573d"
             ]
         ]
     },
     {
-        "id": "6147c6b0e240f6c9",
+        "id": "e09b1a61e6875016",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Location",
         "func": "let last = flow.get(\"lastReading-d2\")?.location || {\n    latitude: -29.1676245,\n    longitude: -51.5065077,\n    altitude: 642.2999877929688\n};\n\nlet latitude = last.latitude;\nlet longitude = last.longitude;\nlet altitude = last.altitude;\n\n// 50% chance to vary\nif (Math.random() < 0.5) {\n    // small delta ~ within ~1–5 meters movement\n    let deltaLat = (Math.random() - 0.5) * 0.00005;   // ~±5m\n    let deltaLon = (Math.random() - 0.5) * 0.00005;   // ~±5m\n    let deltaAlt = (Math.random() - 0.5) * 0.5;       // ±0.5m\n\n    latitude += deltaLat;\n    longitude += deltaLon;\n    altitude += deltaAlt;\n}\n\nlet newLoc = { latitude, longitude, altitude };\nreturn { location: newLoc };",
         "outputs": 1,
@@ -349,14 +349,14 @@
         "y": 1600,
         "wires": [
             [
-                "1aa006c22086956a"
+                "0ed8756a8cab573d"
             ]
         ]
     },
     {
-        "id": "a8247bd5afed370c",
+        "id": "99f57fa8afc0420d",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Filter repeated readings",
         "func": "// Get last stored reading from context\nlet last = flow.get(\"lastReading-d2\") || {};\n\n// Current values\nlet battery = msg.battery;\nlet location = msg.location;\n\n// Check if repeated\nlet sameBattery = last.battery !== undefined && \n                last.battery.percentage === battery.percentage &&\n                last.battery.status === battery.status;\nlet sameLocation = last.location !== undefined &&\n                  last.location.latitude === location.latitude &&\n                  last.location.longitude === location.longitude &&\n                  last.location.altitude === location.altitude;\n\nif (sameBattery) {\n    delete msg.battery\n}\n\nif (sameLocation) {\n    delete msg.location\n}\n\n// Update stored values\nflow.set(\"lastReading-d2\", {\n    battery: battery,\n    location: location\n});\n\nreturn msg;",
         "outputs": 1,
@@ -369,14 +369,14 @@
         "y": 1700,
         "wires": [
             [
-                "8d49ed7da2d8cdf6"
+                "666c68eba22ffea2"
             ]
         ]
     },
     {
-        "id": "8d49ed7da2d8cdf6",
+        "id": "666c68eba22ffea2",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "format message",
         "func": "msg.payload.light = Object.values(msg.light)[0]?.values[0]\ndelete msg.light\n\nif(msg.location){\n    msg.payload.latitude = msg.location.latitude\n    msg.payload.longitude = msg.location.longitude\n    msg.payload.altitude = msg.location.altitude\n    delete msg.location\n}\ndelete msg.payload.location\n\nif(msg.battery){\n    msg.payload.batteryPercentage = msg.battery.percentage\n    msg.payload.batteryStatus = msg.battery.status\n    delete msg.battery\n}\ndelete msg.payload.battery\n\nreturn msg;",
         "outputs": 1,
@@ -389,15 +389,15 @@
         "y": 1700,
         "wires": [
             [
-                "4746adcb8d3b6beb",
-                "52743451ffedfc3d"
+                "90fdff3ac39be9a3",
+                "da0fe4b4a314c386"
             ]
         ]
     },
     {
-        "id": "c314d90ab935797b",
+        "id": "4a6bfb2a88d39bd9",
         "type": "inject",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Trigger (10s)",
         "props": [
             {
@@ -415,18 +415,18 @@
         "y": 2040,
         "wires": [
             [
-                "e3b7588117815f42",
-                "c7f5a2677e2e1638",
-                "670d539160bfec63",
-                "b597b15d59120f4b"
+                "28af05863eecc9b8",
+                "62e59573ac8e2f16",
+                "4694ef3b92bed9a4",
+                "a33f73a395dffcda"
             ]
         ],
         "info": "Trigger"
     },
     {
-        "id": "f3e88709356ff695",
+        "id": "3268610392037566",
         "type": "mqtt out",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "",
         "topic": "v1/devices/me/telemetry",
         "qos": "",
@@ -442,9 +442,9 @@
         "wires": []
     },
     {
-        "id": "b597b15d59120f4b",
+        "id": "a33f73a395dffcda",
         "type": "join",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Barrier to get full report",
         "mode": "custom",
         "build": "merged",
@@ -466,14 +466,14 @@
         "y": 2040,
         "wires": [
             [
-                "7a2a9a77ecb39552"
+                "8abc82b6cb5b1269"
             ]
         ]
     },
     {
-        "id": "e2c5ac8c80d48bda",
+        "id": "6943fefe41315067",
         "type": "debug",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Device 3 Output",
         "active": false,
         "tosidebar": true,
@@ -488,9 +488,9 @@
         "wires": []
     },
     {
-        "id": "e3b7588117815f42",
+        "id": "28af05863eecc9b8",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Light Sensor",
         "func": "let light = 90 + Math.random() * 110; // 90–'200\nlet obj = {}\nobj.light = {\n \"STK31610 Light\": {\n    \"values\": [\n        light\n    ]\n }\n};\nreturn obj",
         "outputs": 1,
@@ -503,14 +503,14 @@
         "y": 1860,
         "wires": [
             [
-                "b597b15d59120f4b"
+                "a33f73a395dffcda"
             ]
         ]
     },
     {
-        "id": "c7f5a2677e2e1638",
+        "id": "62e59573ac8e2f16",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Battery",
         "func": "// Get last reading from context\nlet last = flow.get(\"lastReading-d3\")?.battery || {\n    percentage: 100,\n    status: \"DISCHARGING\"\n};\n\nlet percentage = last.percentage || 100;\nlet status = last.status || \"DISCHARGING\";\n\n// 20% chance of change\nif (Math.random() < 0.2) {\n    if (status === \"CHARGING\") {\n        percentage = percentage + 1;\n    } else {\n        percentage = percentage - 1;\n    }\n}\n\n// Flip status if reaching limits\nif (percentage === 100) {\n    status = \"DISCHARGING\";\n} else if (percentage === 0) {\n    status = \"CHARGING\";\n}\n\nlet obj = {};\nobj.battery = {\n    percentage: percentage,\n    status: status\n};\nreturn obj;",
         "outputs": 1,
@@ -523,14 +523,14 @@
         "y": 1900,
         "wires": [
             [
-                "b597b15d59120f4b"
+                "a33f73a395dffcda"
             ]
         ]
     },
     {
-        "id": "670d539160bfec63",
+        "id": "4694ef3b92bed9a4",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Location",
         "func": "let last = flow.get(\"lastReading-d3\")?.location || {\n    latitude: -29.1676245,\n    longitude: -51.5065077,\n    altitude: 642.2999877929688\n};\n\nlet latitude = last.latitude;\nlet longitude = last.longitude;\nlet altitude = last.altitude;\n\n// 50% chance to vary\nif (Math.random() < 0.5) {\n    // small delta ~ within ~1–5 meters movement\n    let deltaLat = (Math.random() - 0.5) * 0.00005;   // ~±5m\n    let deltaLon = (Math.random() - 0.5) * 0.00005;   // ~±5m\n    let deltaAlt = (Math.random() - 0.5) * 0.5;       // ±0.5m\n\n    latitude += deltaLat;\n    longitude += deltaLon;\n    altitude += deltaAlt;\n}\n\nlet newLoc = { latitude, longitude, altitude };\nreturn { location: newLoc };",
         "outputs": 1,
@@ -543,14 +543,14 @@
         "y": 1940,
         "wires": [
             [
-                "b597b15d59120f4b"
+                "a33f73a395dffcda"
             ]
         ]
     },
     {
-        "id": "7a2a9a77ecb39552",
+        "id": "8abc82b6cb5b1269",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Filter repeated readings",
         "func": "// Get last stored reading from context\nlet last = flow.get(\"lastReading-d3\") || {};\n\n// Current values\nlet battery = msg.battery;\nlet location = msg.location;\n\n// Check if repeated\nlet sameBattery = last.battery !== undefined && \n                last.battery.percentage === battery.percentage &&\n                last.battery.status === battery.status;\nlet sameLocation = last.location !== undefined &&\n                  last.location.latitude === location.latitude &&\n                  last.location.longitude === location.longitude &&\n                  last.location.altitude === location.altitude;\n\nif (sameBattery) {\n    delete msg.battery\n}\n\nif (sameLocation) {\n    delete msg.location\n}\n\n// Update stored values\nflow.set(\"lastReading-d3\", {\n    battery: battery,\n    location: location\n});\n\nreturn msg;",
         "outputs": 1,
@@ -563,14 +563,14 @@
         "y": 2040,
         "wires": [
             [
-                "cbc813639ecad8f0"
+                "88dd0924f0fac075"
             ]
         ]
     },
     {
-        "id": "cbc813639ecad8f0",
+        "id": "88dd0924f0fac075",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "format message",
         "func": "msg.payload.light = Object.values(msg.light)[0]?.values[0]\ndelete msg.light\n\nif(msg.location){\n    msg.payload.latitude = msg.location.latitude\n    msg.payload.longitude = msg.location.longitude\n    msg.payload.altitude = msg.location.altitude\n    delete msg.location\n}\ndelete msg.payload.location\n\nif(msg.battery){\n    msg.payload.batteryPercentage = msg.battery.percentage\n    msg.payload.batteryStatus = msg.battery.status\n    delete msg.battery\n}\ndelete msg.payload.battery\n\nreturn msg;",
         "outputs": 1,
@@ -583,15 +583,15 @@
         "y": 2040,
         "wires": [
             [
-                "e2c5ac8c80d48bda",
-                "f3e88709356ff695"
+                "6943fefe41315067",
+                "3268610392037566"
             ]
         ]
     },
     {
-        "id": "77588d8084646350",
+        "id": "5c23f7f8bef4fecf",
         "type": "inject",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Trigger (10s)",
         "props": [
             {
@@ -609,18 +609,18 @@
         "y": 2380,
         "wires": [
             [
-                "387da42fd4337b72",
-                "d4de3bc8951cce55",
-                "a0d91f0807337b37",
-                "80cd49b26957e302"
+                "d457d2fad226cfc5",
+                "13546c52dcccbd8a",
+                "a3ab14a34ca8b495",
+                "c30f830e7f080492"
             ]
         ],
         "info": "Trigger"
     },
     {
-        "id": "f093a1096cbbdd92",
+        "id": "bb68ede978c17f20",
         "type": "mqtt out",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "",
         "topic": "v1/devices/me/telemetry",
         "qos": "",
@@ -636,9 +636,9 @@
         "wires": []
     },
     {
-        "id": "80cd49b26957e302",
+        "id": "c30f830e7f080492",
         "type": "join",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Barrier to get full report",
         "mode": "custom",
         "build": "merged",
@@ -660,14 +660,14 @@
         "y": 2380,
         "wires": [
             [
-                "04ae9c2700279c11"
+                "4460c60fcfd1e2f0"
             ]
         ]
     },
     {
-        "id": "2c91d6df58da592a",
+        "id": "7e4b5f9297e5a7ac",
         "type": "debug",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Device 4 Output",
         "active": false,
         "tosidebar": true,
@@ -682,9 +682,9 @@
         "wires": []
     },
     {
-        "id": "387da42fd4337b72",
+        "id": "d457d2fad226cfc5",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Light Sensor",
         "func": "let light = 90 + Math.random() * 110; // 90–'200\nlet obj = {}\nobj.light = {\n \"STK31610 Light\": {\n    \"values\": [\n        light\n    ]\n }\n};\nreturn obj",
         "outputs": 1,
@@ -697,14 +697,14 @@
         "y": 2200,
         "wires": [
             [
-                "80cd49b26957e302"
+                "c30f830e7f080492"
             ]
         ]
     },
     {
-        "id": "d4de3bc8951cce55",
+        "id": "13546c52dcccbd8a",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Battery",
         "func": "// Get last reading from context\nlet last = flow.get(\"lastReading-d4\")?.battery || {\n    percentage: 100,\n    status: \"DISCHARGING\"\n};\n\nlet percentage = last.percentage || 100;\nlet status = last.status || \"DISCHARGING\";\n\n// 20% chance of change\nif (Math.random() < 0.2) {\n    if (status === \"CHARGING\") {\n        percentage = percentage + 1;\n    } else {\n        percentage = percentage - 1;\n    }\n}\n\n// Flip status if reaching limits\nif (percentage === 100) {\n    status = \"DISCHARGING\";\n} else if (percentage === 0) {\n    status = \"CHARGING\";\n}\n\nlet obj = {};\nobj.battery = {\n    percentage: percentage,\n    status: status\n};\nreturn obj;",
         "outputs": 1,
@@ -717,14 +717,14 @@
         "y": 2240,
         "wires": [
             [
-                "80cd49b26957e302"
+                "c30f830e7f080492"
             ]
         ]
     },
     {
-        "id": "a0d91f0807337b37",
+        "id": "a3ab14a34ca8b495",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Location",
         "func": "let last = flow.get(\"lastReading-d4\")?.location || {\n    latitude: -29.1676245,\n    longitude: -51.5065077,\n    altitude: 642.2999877929688\n};\n\nlet latitude = last.latitude;\nlet longitude = last.longitude;\nlet altitude = last.altitude;\n\n// 50% chance to vary\nif (Math.random() < 0.5) {\n    // small delta ~ within ~1–5 meters movement\n    let deltaLat = (Math.random() - 0.5) * 0.00005;   // ~±5m\n    let deltaLon = (Math.random() - 0.5) * 0.00005;   // ~±5m\n    let deltaAlt = (Math.random() - 0.5) * 0.5;       // ±0.5m\n\n    latitude += deltaLat;\n    longitude += deltaLon;\n    altitude += deltaAlt;\n}\n\nlet newLoc = { latitude, longitude, altitude };\nreturn { location: newLoc };",
         "outputs": 1,
@@ -737,14 +737,14 @@
         "y": 2280,
         "wires": [
             [
-                "80cd49b26957e302"
+                "c30f830e7f080492"
             ]
         ]
     },
     {
-        "id": "04ae9c2700279c11",
+        "id": "4460c60fcfd1e2f0",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Filter repeated readings",
         "func": "// Get last stored reading from context\nlet last = flow.get(\"lastReading-d4\") || {};\n\n// Current values\nlet battery = msg.battery;\nlet location = msg.location;\n\n// Check if repeated\nlet sameBattery = last.battery !== undefined && \n                last.battery.percentage === battery.percentage &&\n                last.battery.status === battery.status;\nlet sameLocation = last.location !== undefined &&\n                  last.location.latitude === location.latitude &&\n                  last.location.longitude === location.longitude &&\n                  last.location.altitude === location.altitude;\n\nif (sameBattery) {\n    delete msg.battery\n}\n\nif (sameLocation) {\n    delete msg.location\n}\n\n// Update stored values\nflow.set(\"lastReading-d4\", {\n    battery: battery,\n    location: location\n});\n\nreturn msg;",
         "outputs": 1,
@@ -757,14 +757,14 @@
         "y": 2380,
         "wires": [
             [
-                "a5a29ca22006662b"
+                "f241bb84a5fcfe5a"
             ]
         ]
     },
     {
-        "id": "a5a29ca22006662b",
+        "id": "f241bb84a5fcfe5a",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "format message",
         "func": "msg.payload.light = Object.values(msg.light)[0]?.values[0]\ndelete msg.light\n\nif(msg.location){\n    msg.payload.latitude = msg.location.latitude\n    msg.payload.longitude = msg.location.longitude\n    msg.payload.altitude = msg.location.altitude\n    delete msg.location\n}\ndelete msg.payload.location\n\nif(msg.battery){\n    msg.payload.batteryPercentage = msg.battery.percentage\n    msg.payload.batteryStatus = msg.battery.status\n    delete msg.battery\n}\ndelete msg.payload.battery\n\nreturn msg;",
         "outputs": 1,
@@ -777,15 +777,15 @@
         "y": 2380,
         "wires": [
             [
-                "2c91d6df58da592a",
-                "f093a1096cbbdd92"
+                "7e4b5f9297e5a7ac",
+                "bb68ede978c17f20"
             ]
         ]
     },
     {
-        "id": "af9ec4ed0b13d58d",
+        "id": "e38cf93072b5608d",
         "type": "inject",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "",
         "props": [
             {
@@ -807,14 +807,14 @@
         "y": 1000,
         "wires": [
             [
-                "1534b7c747c756fa"
+                "c658f9a977e37a8d"
             ]
         ]
     },
     {
-        "id": "1534b7c747c756fa",
+        "id": "c658f9a977e37a8d",
         "type": "function",
-        "z": "f6f2187d.f17ca8",
+        "z": "75eda1d0d4b6584b",
         "name": "Reset context",
         "func": "flow.set('lastReading-d1', undefined); // Resets a specific variable\nflow.set('lastReading-d2', undefined);\nflow.set('lastReading-d3', undefined);\nflow.set('lastReading-d4', undefined);\nreturn msg;",
         "outputs": 1,
@@ -835,6 +835,10 @@
         "name": "Device 1",
         "broker": "thingsboard-ce",
         "port": 1883,
+        "credentials": {
+            "user": "PC1",
+            "password": "PC1"
+        },
         "clientid": "1",
         "autoConnect": true,
         "usetls": false,
@@ -866,6 +870,10 @@
         "name": "Device 2",
         "broker": "thingsboard-ce",
         "port": 1883,
+         "credentials": {
+            "user": "PC2",
+            "password": "PC2"
+        },
         "clientid": "2",
         "autoConnect": true,
         "usetls": false,
@@ -897,6 +905,10 @@
         "name": "Device 3",
         "broker": "thingsboard-ce",
         "port": 1883,
+         "credentials": {
+            "user": "PC3",
+            "password": "PC3"
+        },
         "clientid": "3",
         "autoConnect": true,
         "usetls": false,
@@ -928,6 +940,10 @@
         "name": "Device 4",
         "broker": "thingsboard-ce",
         "port": 1883,
+        "credentials": {
+            "user": "PC4",
+            "password": "PC4"
+        },
         "clientid": "4",
         "autoConnect": true,
         "usetls": false,
