@@ -30,7 +30,7 @@ Tendo importado os dispositivos, basta clicar e deploy para iniciar a simulaçã
 
 #### Configurando o Android como dispositivo IOT
 
-Também é possível configurar seu Android como dispositivo e utilizar os sensores reais dele. Para isso, é necessário instalar o Termux e Termux:API os quais vão simular um terminal linux e fornecer os comandos para acessar os sensores respectivamente. Para baixá-los, é recomendado utilizar a loja de aplicativos F-droid, a qual detem as versões mais atualizadas. Para os testes foram utilizadas as versões 0.118.3 do Termux e 0.53.0 do Termux:API. Após instalado, você pode testar o acesso aos sensores com os seguintes comandos:
+Também é possível configurar seu Android como dispositivo e utilizar os sensores reais dele. Para isso, é necessário instalar o Termux e Termux:API os quais vão simular um terminal linux e fornecer os comandos para acessar os sensores respectivamente. Para instalá-los, é recomendado utilizar a loja de aplicativos F-droid, a qual detem as versões mais atualizadas. Para os testes, foram utilizadas as versões 0.118.3 do Termux e 0.53.0 do Termux:API. Após instalado, você pode testar o acesso aos sensores com os seguintes comandos:
 
 ```
 termux-sensor -l // Lista todos os sensores disponíveis
@@ -50,13 +50,9 @@ pkg install nodejs
 npm install -g --unsafe-perm node-red
 ```
 
-Esses comandos instalarão tanto o node como node-red e para iniciar o node-red, basta rodar o comando `node-red` e abrir o navegador em http://localhost:1880.
+Esses comandos instalarão tanto o node como node-red. Para iniciar o node-red, basta rodar o comando `node-red` e abrir o navegador em http://localhost:1880.
 
-É importante validar que os comandos do sensor que estão pré configurados funcionem no seu dispositivo e caso não funcionem é necessário atualizá-los nos blocos de `exec` Light, Battery Telemetry e Location (é bem provável que seja necessário mudar o nome dos sensores de acordo no comando dos blocos citados). Para referência, o dispositivo utilizado é um Galaxy A55 com o android 15.
-
-##### Problemas com Android matando processo
-
-No Android existe um mecanismo chamado Phantom Process Killer, que faz com que processos em segundo plano sejam encerrados para poupar bateria. Caso, o termux sinalize que o processo foi encerrado com o sinal 9, você pode seguir o tutorial do [video](https://www.youtube.com/watch?v=ArkFTNEbxZs) para corrigir isso.
+É importante validar que os comandos do sensor que estão pré configurados funcionem no seu dispositivo. Caso não funcionem é necessário atualizá-los nos blocos de `exec` Light, Battery Telemetry e Location (é bem provável que seja necessário mudar o nome dos sensores no comando dos blocos citados). Para referência, o dispositivo utilizado é um Galaxy A55 com o android 15 e os comandos utilizados são listados abaixo.
 
 ```
 termux-sensor -s "STK31610 Light" -n 1 // Comando usado no bloco light
@@ -65,6 +61,10 @@ termux-location -p network -r once // Comando usado no bloco Location
 ```
 
 A importação do código para o node-red é bem similar com a dos dispositivos simulados no PC, porém ao invés de usar o `/iot-device/PC_Devices.json`, use `/iot-device/Android.json`. Além disso, busque no arquivo por mqtt-broker e altere a propriedade broker para o ip da máquina que estará rodando o Thingsboard, isso garantirá que na hora de importar o código o node-red, ele envie a telemetria para o servidor correto (lembre-se que tanto o servidor como o Android devem estar na mesma rede). 
+
+##### Problemas com Android matando processo
+
+No Android existe um mecanismo chamado Phantom Process Killer, que faz com que processos em segundo plano sejam encerrados para poupar bateria. Caso, o termux sinalize que o processo foi encerrado com o sinal 9, você pode seguir o tutorial do [video](https://www.youtube.com/watch?v=ArkFTNEbxZs) para corrigir isso. O erro não vai impedir o Android de mandar telemetria, mas vai eventualmente encerrar o processo do node-red.
 
 ## Serviços
 
