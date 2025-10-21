@@ -64,7 +64,15 @@ A importação do código para o node-red é bem similar com a dos dispositivos 
 
 ##### Problemas com Android matando processo
 
-No Android existe um mecanismo chamado Phantom Process Killer, que faz com que processos em segundo plano sejam encerrados para poupar bateria. Caso, o termux sinalize que o processo foi encerrado com o sinal 9, você pode seguir o tutorial do [video](https://www.youtube.com/watch?v=ArkFTNEbxZs) para corrigir isso. O erro não vai impedir o Android de mandar telemetria, mas vai eventualmente encerrar o processo do node-red.
+No Android existe um mecanismo chamado Phantom Process Killer, que faz com que processos em segundo plano sejam encerrados para poupar bateria. Caso, o termux sinalize que o processo foi encerrado com o sinal 9, você pode seguir o tutorial do [video](https://www.youtube.com/watch?v=ArkFTNEbxZs) ou o [passo a passo escrito](https://birdsintech.blogspot.com/2023/09/how-to-fix-signal-9-error-in-termux.html) para corrigir isso. O erro não vai impedir o Android de mandar telemetria, mas vai eventualmente encerrar o processo do node-red.
+
+Para reverter as configurações de desativação do phantom process killer, rode os seguintes comandos:
+```
+adb shell settings put global settings_enable_monitor_phantom_procs true
+adb shell "/system/bin/device_config put activity_manager max_phantom_processes 32"
+adb shell "/system/bin/device_config set_sync_disabled_for_tests none"
+adb reboot
+```
 
 ## Serviços
 
