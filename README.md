@@ -85,3 +85,48 @@ Node-Red
 
 PgAdmin
 - UI - http://localhost:5050
+
+## Arquitetura
+
+A arquitetura utilizada simula um dispositivo IoT com o Node-Red que se comunica por meio de MQTT com um broker controlado pelo ThingsBoard. Esse broker utiliza o Kafka como fila de mensageria para alimentar o próprio consumidor do ThingsBoard. O consumidor, por sua vez, armazena os dados num banco de dados que, por fim, alimenta o portal do ThingsBoard que roda na porta 8080.
+
+```
+         ┌────────────────┐                                     
+         │                │                                     
+         │                │                                     
+         │    Node-Red    │                                     
+         │                │                                     
+         │                │                                     
+         └────────┬───────┘                                     
+                  │                                             
+                  │                                             
+                  │                                             
+                  │                                             
+                  │                                             
+                  │                                             
+┌─────────────────┼────────────────┐                            
+│                 ▼                │                            
+│    ┌────────────────────────┐    │          ┌────────────────┐
+│    │                        │    │          │                │
+│    │       Broker MQTT      ┼────┼─────────►│                │
+│    │                        │    │          │      Kafka     │
+│    └────────────────────────┘    │          │                │
+│                                  │          │                │
+│    ┌────────────────────────┐    │          └┬───────────────┘
+│    │                        │◄───┼───────────┘                
+│    │       Consumidor       │    │          ┌────────────────┐
+│    │                        ┼────┼─────────►│                │
+│    └────────────────────────┘    │          │                │
+│                                  │          │    Postgres    │
+│    ┌────────────────────────┐    │          │                │
+│    │                        │◄───┼──────────┼                │
+│    │        Dashboard       │    │          └────────────────┘
+│    │                        │    │                            
+│    └────────────────────────┘    │                            
+│                                  │                            
+│                                  │                            
+│                                  │                            
+│           ThingsBoard            │                            
+│                                  │                            
+└──────────────────────────────────┘                                                    
+```
